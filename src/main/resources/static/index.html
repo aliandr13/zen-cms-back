@@ -1,0 +1,92 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ZenCms</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="style.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column h-100 bg-light">
+
+<header th:fragment="header">
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-blue" aria-label="Main navigation"
+         th:fragment="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">ZEN-cms</a>
+            <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/greeting">Greeting</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- Begin page content -->
+<main class="flex-shrink-0">
+    <div class="container">
+
+        <div class="d-flex align-items-center p-3 my-3 text-white bg-blue rounded shadow-sm">
+            <img class="me-3" src="../favicon.ico" alt="" width="48" height="38">
+            <div class="lh-1">
+                <h1 class="h6 mb-0 text-white lh-1">Tutorials</h1>
+                <small>List of all tutorials</small>
+            </div>
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <h6 class="border-bottom pb-2 mb-0">Tutorials</h6>
+            <div class="d-flex text-muted pt-3">
+<!--                <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32"-->
+<!--                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"-->
+<!--                     preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>-->
+<!--                    <rect width="100%" height="100%" fill="#007bff"/>-->
+<!--                    <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>-->
+<!--                </svg>-->
+
+                <ul>
+                    <li th:each="article : ${articles}">
+                        <a href="comments.html" th:href="@{'/article/' + ${article.path}}" th:text="${article.title}">Article
+                            name</a>
+                    </li>
+                </ul>
+
+            </div>
+            <small class="d-block text-end mt-3">
+                <a href="#">All updates</a>
+            </small>
+        </div>
+    </div>
+</main>
+
+<footer class="footer mt-auto py-3 bg-blue" th:fragment="footer">
+    <div class="container">
+        <span class="text-muted">&copy; 2022 Zen cms.</span>
+    </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
