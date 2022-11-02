@@ -41,8 +41,8 @@
                     <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
                 </svg>
 
-                <p class="pb-3 mb-0 small lh-sm border-bottom" th:text="${content.content}">
-                </p>
+                <div th:utext="${content.content}">
+                </div>
 
             </div>
             <small class="d-block text-end mt-3">

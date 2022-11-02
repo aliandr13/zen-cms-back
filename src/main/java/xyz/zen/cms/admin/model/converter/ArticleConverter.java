@@ -20,10 +20,13 @@ public class ArticleConverter implements Converter<ArticleEntity, ArticleInfoDto
 
     @Override
     public ArticleInfoDto convert(ArticleEntity articleEntity) {
-        return new ArticleInfoDto(articleEntity.getTitle(),
+        return new ArticleInfoDto(articleEntity.getId(),
+                articleEntity.getTitle(),
                 articleEntity.isPublished(),
                 articleEntity.getAuthor(),
                 articleEntity.getPath(),
-                dateConverter.convert(articleEntity.getCreateDate()));
+                dateConverter.convert(articleEntity.getCreateDate()),
+                dateConverter.convert(articleEntity.getModifyDate())
+        );
     }
 }

@@ -10,6 +10,7 @@ import java.util.Date;
 public class DateConverter implements Converter<Date, LocalDate> {
     @Override
     public LocalDate convert(Date date) {
+        if(date == null) return null;
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 }

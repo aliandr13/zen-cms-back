@@ -9,7 +9,7 @@ public class ContentConverter implements Converter<ArticleEntity, ArticleContent
 
     @Override
     public ArticleContentDto convert(ArticleEntity articleEntity) {
-        return new ArticleContentDto(articleEntity.getTitle(),
+        return new ArticleContentDto(articleEntity.getId(), articleEntity.getTitle(),
                 articleEntity.getAuthor(),
                 articleEntity.getContent(),
                 articleEntity.getPath()

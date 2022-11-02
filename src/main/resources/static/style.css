@@ -19,3 +19,10 @@ body {
 }
 
 .bg-blue { background-color: #124; }
+
+blockquote {
+    padding-left: 16px;
+    border-left: 3px solid #007bff;
+    margin-left: 0;
+    margin-right: 0;
+}
