@@ -14,4 +14,5 @@ public interface ArticleRepository extends CrudRepository<ArticleEntity, Long> {
 
     Optional<ArticleEntity> findByPath(String path);
 
+    List<ArticleEntity> findAllByPublished(Boolean published);
 }

@@ -1,14 +1,16 @@
 package xyz.zen.cms.admin.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import xyz.zen.cms.admin.exception.ValidationException;
 import xyz.zen.cms.admin.model.dto.ArticleContentDto;
 import xyz.zen.cms.admin.model.dto.ArticleInfoDto;
+import xyz.zen.cms.admin.model.dto.ArticleUpdateDto;
 import xyz.zen.cms.admin.service.ArticleService;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(path = "/api/articles")
@@ -19,6 +21,11 @@ public class ArticleController {
     @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
+        addArticles();
+
+    }
+
+    private void addArticles() {
         articleService.create(new ArticleContentDto(null, "Spring boot", "Author", "<h1>Spring boot</h1><h2>Content</h2><p><strong>BOLD</strong></p><p><em>italic</em></p><p><u>underscore</u></p>", "spring-boot"));
         articleService.create(new ArticleContentDto(null, "Angular", "Author", "<h1>Angular</h1><h2>Content</h2><p><em>add some content</em></p>", "angular"));
         articleService.create(new ArticleContentDto(null, "Lorem Ipsum", "Cicero", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi a malesuada est. In eu est a turpis tincidunt venenatis a a nisi. Nulla fringilla risus augue, ut euismod lectus placerat id. Cras ut nisi sed mi lacinia tincidunt. Sed dapibus metus non elit egestas volutpat. Vivamus odio augue, efficitur vel ornare ac, elementum laoreet magna. Donec porta ex turpis, eget aliquam magna tempor eu. Nullam a nunc suscipit, condimentum velit vitae, imperdiet nibh. Donec accumsan ultricies eros, sed varius nibh. Vestibulum viverra nisl et sem consequat, id sodales dui fermentum. Sed sollicitudin massa sed nibh rutrum blandit. Sed mauris lorem, convallis in imperdiet eget, malesuada id felis.\n" +
@@ -44,7 +51,13 @@ public class ArticleController {
         return articleService.getCount();
     }
 
+    @GetMapping(path = "/{id}")
+    public ArticleContentDto getContent(@PathVariable Long id) {
+        return articleService.getContent(id).orElseThrow();
+    }
+
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody ArticleContentDto articleDto) {
         articleService.create(articleDto);
     }
@@ -54,8 +67,18 @@ public class ArticleController {
         articleService.update(articleDto);
     }
 
-    @GetMapping(path = "/{id}")
-    public ArticleContentDto getContent(@PathVariable Long id){
-        return articleService.getContent(id).orElseThrow();
+    @PatchMapping()
+    public void publish(@RequestBody ArticleUpdateDto dto) {
+        if (Objects.isNull(dto.getId())) {
+            throw new ValidationException("Id should be provided");
+        }
+        articleService.partUpdate(dto);
     }
+
+    @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        articleService.delete(id);
+    }
+
 }

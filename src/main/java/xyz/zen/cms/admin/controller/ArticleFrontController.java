@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import xyz.zen.cms.admin.model.dto.ArticleContentDto;
+import xyz.zen.cms.admin.model.dto.ArticleInfoDto;
 import xyz.zen.cms.admin.service.ArticleService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -28,13 +30,13 @@ public class ArticleFrontController {
 
     @GetMapping("/")
     public String mainPage(Model model) {
-        model.addAttribute("articles", articleService.getAll());
+        List<ArticleInfoDto> all = articleService.getPublished();
+        model.addAttribute("articles", all);
         return "index";
     }
 
     @GetMapping("/article/{path}")
     public String articlePage(@PathVariable String path, Model model) {
-        System.out.println("Path: " + path);
         Optional<ArticleContentDto> content = articleService.getContent(path);
         if (content.isEmpty()) {
             model.addAttribute("path", path);

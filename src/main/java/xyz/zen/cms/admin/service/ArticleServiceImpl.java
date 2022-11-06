@@ -2,15 +2,16 @@ package xyz.zen.cms.admin.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.zen.cms.admin.exception.NotFoundException;
 import xyz.zen.cms.admin.model.converter.Converter;
 import xyz.zen.cms.admin.model.dto.ArticleContentDto;
 import xyz.zen.cms.admin.model.dto.ArticleInfoDto;
+import xyz.zen.cms.admin.model.dto.ArticleUpdateDto;
 import xyz.zen.cms.admin.repository.ArticleRepository;
 import xyz.zen.cms.admin.repository.entity.ArticleEntity;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -53,7 +54,16 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleInfoDto> getAll() {
-        return articleRepository.findAll().stream().map(articleConverter::convert).collect(Collectors.toList());
+        return articleRepository.findAll().stream()
+                .map(articleConverter::convert)
+                .toList();
+    }
+
+    @Override
+    public List<ArticleInfoDto> getPublished() {
+        return articleRepository.findAllByPublished(true)
+                .stream().map(articleConverter::convert)
+                .toList();
     }
 
     @Override
@@ -62,12 +72,29 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<ArticleContentDto> getContent(String path) {
         return articleRepository.findByPath(path).map(contentConverter::convert);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<ArticleContentDto> getContent(Long id) {
         return articleRepository.findById(id).map(contentConverter::convert);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        articleRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void partUpdate(final ArticleUpdateDto dto) {
+        ArticleEntity articleEntity = articleRepository.findById(dto.getId())
+                .orElseThrow(() -> new NotFoundException("Article by id: " + dto.getId()));
+        articleEntity.setPublished(dto.getPublished());
+        articleRepository.save(articleEntity);
     }
 }

@@ -38,21 +38,22 @@ public class ArticleEntity {
     @Column(name = "content", length = 4056)
     private String content;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "path")
+    @Column(name = "path", unique = true, nullable = false)
     private String path;
 
-    @Column(name = "author")
+    @Column(name = "author", nullable = false)
     private String author;
 
     @Column(name = "published", nullable = false)
     private boolean published = false;
 
-    @Setter(AccessLevel.NONE)
+
     @Version
     @Column(name = "version")
+    @Setter(AccessLevel.NONE)
     private Integer version;
 
     @CreationTimestamp
