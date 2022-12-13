@@ -14,7 +14,7 @@ public class CorsFilterConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         //config.setAllowCredentials(true); // you USUALLY want this
-        config.addAllowedOrigin("https://zencms.link");
+        config.addAllowedOrigin("https://admin.zencms.link");
         config.addAllowedHeader("*");
         config.addAllowedMethod("OPTIONS");
         config.addAllowedMethod("HEAD");
